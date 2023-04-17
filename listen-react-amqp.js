@@ -10,7 +10,7 @@ export default function makeListenReactAmqp ({ amqp, makeAmqpCallback }) {
           throw new Error(channelError)
         }
         channel.assertQueue(queue);
-        const amqpCallback = makeAmqpCallback(channel, controller)
+        const amqpCallback = makeAmqpCallback({ channel, controller })
         console.log(`Server is listening on queue ${queue}`)
         channel.consume(queue, amqpCallback)
       })
