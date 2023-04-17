@@ -1,5 +1,5 @@
 export default function makeListenReactAmqp ({ amqp, makeAmqpCallback }) {
-  return function listenReactAmqp ({ url, queue, controller }) {
+  return function listenReactAmqp ({ url, queue, controller, healthyCallback = null }) {
     console.log('Connecting server...')
     amqp.connect(url, (connectionError, connection) => {
       if (connectionError) {
@@ -11,6 +11,9 @@ export default function makeListenReactAmqp ({ amqp, makeAmqpCallback }) {
         }
         channel.assertQueue(queue);
         const amqpCallback = makeAmqpCallback({ channel, controller })
+        if (healthyCallback) {
+          healthyCallback()
+        }
         console.log(`Server is listening on queue ${queue}`)
         channel.consume(queue, amqpCallback)
       })
