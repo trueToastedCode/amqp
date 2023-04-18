@@ -4,7 +4,7 @@ export default function processApiResult ({ result, expectedStatusCode, throwErr
   }
   result = JSON.parse(result)
   if (throwError && result.statusCode !== expectedStatusCode) {
-    throw new Error(result.body.error ?? `Expected status ${expectedStatusCode}, got ${result.statusCode}`)
+    throw new Error(result.error ?? `Expected status ${expectedStatusCode}, got ${result.statusCode}`)
   }
   return result
 }
