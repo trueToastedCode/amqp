@@ -1,4 +1,4 @@
-export default function makeAmqpCallback ({ channel, controller }) {
+export default function makeAmqpCallback ({ channel, controllers }) {
   return async function amqpCallback (rabbitMessage) {
     let result
     try {
@@ -7,7 +7,7 @@ export default function makeAmqpCallback ({ channel, controller }) {
       const i = message.indexOf('{')
       const functionName = i == -1 ? message : message.substring(0, i)
       // get controller
-      const chosen = controller[functionName]
+      const chosen = controllers[functionName]
       if (chosen) {
         // parse arguments
         let params
