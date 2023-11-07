@@ -31,10 +31,14 @@ export default function buildMakeAmqpAccess ({ amqp, EventEmitter, Id, timeout }
         promise: new Promise(resolve => {
           const correlationId = Id.createId()
           channel.responseEmitter.once(correlationId, resolve)
-          channel.sendToQueue(rpcQueue, Buffer.from(message), {
-            correlationId,
-            replyTo: replyQueue
-          })
+          channel.sendToQueue(
+            rpcQueue,
+            Buffer.from(message), {
+              correlationId,
+              replyTo: replyQueue,
+              expiration: (timeoutMs == null || timeoutMs <= 0) ? null : timeoutMs
+            }
+          )
         }),
         ms: timeoutMs
       })
